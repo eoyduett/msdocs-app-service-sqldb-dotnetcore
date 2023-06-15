@@ -19,9 +19,25 @@ builder.Services.AddControllersWithViews();
 // Add App Service logging
 builder.Logging.AddAzureWebAppDiagnostics();
 
-builder.Services.AddApplicationInsightsTelemetry(); // Add this line of code to enable Application Insights.
-builder.Services.AddServiceProfiler(); // Add this line of code to enable Profiler
-builder.Services.AddControllersWithViews();
+// Add services to the container.
+builder.Services.AddApplicationInsightsTelemetry();
+builder.Services.AddServiceProfiler();
+
+
+IHost host = Host.CreateDefaultBuilder(args)
+    .ConfigureServices(services =>
+    {
+        services.AddApplicationInsightsTelemetryWorkerService();
+        services.AddServiceProfiler();
+
+        // Assuming Worker is your background service class.
+        services.AddHostedService<Worker>();
+    })
+    .Build();
+
+await host.RunAsync();
+
+
 
 var app = builder.Build();
 
