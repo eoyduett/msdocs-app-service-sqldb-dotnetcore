@@ -45,3 +45,17 @@ app.MapControllerRoute(
     pattern: "{controller=Todos}/{action=Index}/{id?}");
 
 app.Run();
+
+
+IHost host = Host.CreateDefaultBuilder(args)
+    .ConfigureServices(services =>
+    {
+        services.AddApplicationInsightsTelemetryWorkerService();
+        services.AddServiceProfiler();
+
+        // Assuming Worker is your background service class.
+        services.AddHostedService<Worker>();
+    })
+    .Build();
+
+await host.RunAsync();
