@@ -19,9 +19,6 @@ builder.Services.AddControllersWithViews();
 // Add App Service logging
 builder.Logging.AddAzureWebAppDiagnostics();
 
-// Add services to the container.
-builder.Services.AddApplicationInsightsTelemetry();
-builder.Services.AddServiceProfiler();
 
 var app = builder.Build();
 
@@ -47,15 +44,3 @@ app.MapControllerRoute(
 app.Run();
 
 
-IHost host = Host.CreateDefaultBuilder(args)
-    .ConfigureServices(services =>
-    {
-        services.AddApplicationInsightsTelemetryWorkerService();
-        services.AddServiceProfiler();
-
-        // Assuming Worker is your background service class.
-        services.AddHostedService<Worker>();
-    })
-    .Build();
-
-await host.RunAsync();
