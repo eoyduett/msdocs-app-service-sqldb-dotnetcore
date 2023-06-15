@@ -23,22 +23,6 @@ builder.Logging.AddAzureWebAppDiagnostics();
 builder.Services.AddApplicationInsightsTelemetry();
 builder.Services.AddServiceProfiler();
 
-
-IHost host = Host.CreateDefaultBuilder(args)
-    .ConfigureServices(services =>
-    {
-        services.AddApplicationInsightsTelemetryWorkerService();
-        services.AddServiceProfiler();
-
-        // Assuming Worker is your background service class.
-        services.AddHostedService<Worker>();
-    })
-    .Build();
-
-await host.RunAsync();
-
-
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
